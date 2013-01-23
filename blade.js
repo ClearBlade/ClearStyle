@@ -7,19 +7,33 @@ $(function() {
   //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
   document.body.ontouchstart = function() {};
 
-  //Make switches work on swipeLeft and swipeRight, not just tap
+  //Make switches work on swipeLeft, swipeRight, and tap.  disable click
   $(document).on("swipeLeft", "input[type='checkbox']", function() {
-    this.checked = false;
-    $(this).trigger('input');
+    if (!this.disabled && this.checked) {
+      this.checked = false;
+      $(this).trigger('change');
+    }
   });
   $(document).on("swipeRight", "input[type='checkbox']", function() {
-    this.checked = true;
-    $(this).trigger('input');
+    if (!this.disabled && !this.checked) {
+      this.checked = true;
+      $(this).trigger('change');
+    }
+  });
+  $(document).on("tap", "input[type='checkbox']", function() {
+    if (!this.disabled) {
+      this.checked = !this.checked;
+      $(this).trigger('change');
+    }
+  });
+  //Disable real clicks on checkboxes, we're using fake ones triggered by jqmobi
+  $(document).on('click', "input[type='checkbox']", function(e) {
+    e.preventDefault();
   });
 
-  //Make toolbars not scroll
-  $('body').on('touchstart touchmove touchend', '.toolbar', function(e) {
-    e.preventDefault();
+  $('body').on('scroll', function() {
+    $(".page").focus();
+    alert('ok');
   });
 }); 
 
@@ -90,11 +104,11 @@ var Dialog = (function() {
         '<a class="btn btn-cancel left">$1</a>'
       ].join('\n').format(buttonOk, buttonCancel);
     } else {
-      buttonsTemplate = '<a class="btn btn-primary">$0</a>'.format(buttonOk);
+      buttonsTemplate = '<a class="btn btn-primary full">$0</a>'.format(buttonOk);
     }
     this.element.html([
       '<div class="dialog-header"><h3>$0</h3></div>',
-      '<div class="dialog-body"><p>$1</p>',
+      '<div class="dialog-body"><p>$1</p></div>',
       '<div class="dialog-footer">$2</div>'
     ].join('\n').format(title, text, buttonsTemplate));
 
