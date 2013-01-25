@@ -7,30 +7,6 @@ $(function() {
   //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
   document.body.ontouchstart = function() {};
 
-  //Make switches work on swipeLeft, swipeRight, and tap.  disable click
-  $(document).on("swipeLeft", "input[type='checkbox']", function() {
-    if (!this.disabled && this.checked) {
-      this.checked = false;
-      $(this).trigger('change');
-    }
-  });
-  $(document).on("swipeRight", "input[type='checkbox']", function() {
-    if (!this.disabled && !this.checked) {
-      this.checked = true;
-      $(this).trigger('change');
-    }
-  });
-  $(document).on("tap", "input[type='checkbox']", function() {
-    if (!this.disabled) {
-      this.checked = !this.checked;
-      $(this).trigger('change');
-    }
-  });
-  //Disable real clicks on checkboxes, we're using fake ones triggered by jqmobi
-  $(document).on('click', "input[type='checkbox']", function(e) {
-    e.preventDefault();
-  });
-
   $('body').on('scroll', function() {
     $(".page").focus();
     alert('ok');

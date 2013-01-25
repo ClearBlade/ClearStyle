@@ -37,10 +37,10 @@ body {
  * content will be clipped on scroll
  * http://stackoverflow.com/questions/7808110/css3-property-webkit-overflow-scrollingtouch-error
  * http://stackoverflow.com/a/7893031/238459
-*/ /*
+*/ 
 .page * {
   -webkit-transform: translate3d(0,0,0);
-} */
+} 
 
 .page h2 {
   margin: 0 0 0 14px;
@@ -63,10 +63,12 @@ body {
   right: 0;
   height: 45px;
   margin: auto;
-  z-index: 1000;
+  z-index: 8;
   background: url(images/toolbar.png) repeat-x;
+  -webkit-transform: translate3d(0,0,0);
 }
 
+/* If a page is after a toolbar, make it pad below the toolbar */
 .toolbar ~ .page {
   padding-top: 55px;
 }
@@ -337,20 +339,30 @@ input[type=checkbox]:disabled {
 /*********************************************************************************************/
 /* Dialog */
 
-@-webkit-keyframes dialog {
+@-webkit-keyframes dialogIn {
   0% { -webkit-transform: scale(0.5,0.5);
       opacity: 0; }
   100% { -webkit-transform: scale(1,1);
       opacity: 1; }
 }
+@-webkit-keyframes dialogOut {
+  0% { -webkit-transform: scale(1,1);
+      opacity: 1; }
+  100% { -webkit-transform: scale(0.5,0.5);
+      opacity: 0; }
+}
 
-@-webkit-keyframes backdrop {
+@-webkit-keyframes backdropIn {
+  0% { opacity: 0; }
+  100% { opacity: 0.3; }
+}
+@-webkit-keyframes backdropOut {
   0% { opacity: 0; }
   100% { opacity: 0.3; }
 }
 
 .dialog {
-  -webkit-animation-name: dialog;
+  -webkit-animation-name: dialogIn;
   opacity: 1;
   position: fixed;
   top: 50%;
@@ -369,6 +381,7 @@ input[type=checkbox]:disabled {
   text-align: center;
 }
 .dialog.out {
+  -webkit-animation-name: dialogOut;
   opacity: 0;
 }
 .dialog-backdrop {
@@ -383,16 +396,12 @@ input[type=checkbox]:disabled {
   opacity: 0.3;
 }
 .dialog-backdrop.out {
+  -webkit-animation-name: backdropOut;
   opacity: 0;
 }
 .dialog, 
 .dialog-backdrop {
   -webkit-animation-duration: 0.2s;
-}
-.dialog.out,
-.dialog-backdrop.out {
-  -webkit-animation-direction: reverse;
-  -webkit-animation-play-state: running;
 }
 
 
@@ -448,17 +457,21 @@ input[type=checkbox]:disabled {
 /************************************************************************************************/
 
 /* Toast */
-@-webkit-keyframes toast {
-  0% {  
-    -webkit-transform: translate3d(0, 100%, 0);
+@-webkit-keyframes toastIn {
+  0% {  -webkit-transform: translate3d(0, 100%, 0); }
+  100% { -webkit-transform: translate3d(0, 0, 0);
   }
-  100% { 
-    -webkit-transform: translate3d(0, 0, 0);
+}
+@-webkit-keyframes toastOut {
+  0% {  -webkit-transform: translate3d(0, 0, 0); }
+  100% { -webkit-transform: translate3d(0, 100%, 0);
   }
 }
 
 .toast {
-  -webkit-animation: toast 1s;
+  -webkit-animation-name: toastIn;
+  -webkit-animation-timing-function: ease-out;
+  -webkit-animation-duration: 1s;
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -482,8 +495,7 @@ input[type=checkbox]:disabled {
 }
 
 .toast.out {
-  -webkit-animation-direction: reverse;
-  -webkit-animation-play-state: running;
+  -webkit-animation-name: toastOut;
   -webkit-transform: translate3d(0,100%,0);
 }
 
@@ -514,7 +526,10 @@ input[type=checkbox]:disabled {
  */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('font/fontawesome-webfont.woff') format('woff');
+  src: url('../font/fontawesome-webfont.eot?v=3.0.1') format('embedded-opentype'),
+    url('../font/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+    url('../font/fontawesome-webfont.ttf?v=3.0.1') format('truetype'),
+    url('font/FontAwesome.otf?v=3.0.1') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
