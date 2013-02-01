@@ -38,7 +38,7 @@ body {
   -webkit-transform: translate3d(0,0,0);
 } 
 
-.page h2 {
+.page > h2 {
   margin: 0 0 0 14px;
   padding-top: 4px;
   font-size: inherit;
