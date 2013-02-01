@@ -6,11 +6,6 @@ $(function() {
   //ios ':active' css fix
   //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
   document.body.ontouchstart = function() {};
-
-  $('body').on('scroll', function() {
-    $(".page").focus();
-    alert('ok');
-  });
 }); 
 
 // String.format: simple string formatter
