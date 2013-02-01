@@ -353,8 +353,8 @@ input[type=checkbox]:disabled {
   100% { opacity: 0.3; }
 }
 @-webkit-keyframes backdropOut {
-  0% { opacity: 0; }
-  100% { opacity: 0.3; }
+  0% { opacity: 0.3; }
+  100% { opacity: 0; }
 }
 
 .dialog {
