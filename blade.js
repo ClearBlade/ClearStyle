@@ -6,6 +6,17 @@ $(function() {
   //ios ':active' css fix
   //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
   document.body.ontouchstart = function() {};
+
+  $(document).on('swipeLeft', 'input[type="checkbox"]', function() {
+    if (this.checked) {
+      $(this).trigger('click');
+    }
+  });
+  $(document).on('swipeRight', 'input[type="checkbox"]', function() {
+    if (!this.checked) {
+      $(this).trigger('click');
+    }
+  });
 }); 
 
 // String.format: simple string formatter
@@ -65,7 +76,7 @@ var Dialog = (function() {
   function Dialog(title, text, buttonOk, buttonCancel) {
     var buttonsTemplate;
     this.element = $("<div>").addClass('dialog');
-    this.backdrop = $("<div>").addClass('dialog-backdrop');
+    this.backdrop = $("<div>").addClass('backdrop dialog-backdrop');
 
     //Construct dialog inner HTML
     //Two buttons or one?
@@ -133,6 +144,37 @@ var Dialog = (function() {
       if (error['oslc_cm:message']) error = error['oslc_cm:message'];
       if (error.text) error = error.text;
       (new Dialog(ERROR_TITLE, error, OK_BUTTON)).show(callback);
+    }
+  };
+}());
+
+/* Spinner */
+var Spinner = (function() {
+  var $spinner, $backdrop;
+  var spinnerTemplate = '<div class="spinner"><i class="icon-spin icon-refresh"></i></div>';
+  function onHidden() {
+    $spinner.off('webkitTransitionEnd', onHidden);
+    $spinner.removeClass('out').remove();
+    $backdrop.removeClass('out').remove();
+  }
+  return {
+    show: function() {
+      if (!$spinner) {
+        $spinner = $(spinnerTemplate);
+      }
+      if (!$backdrop) {
+        $backdrop = $("<div>").addClass("backdrop");
+      }
+      //If it's fading out, just finish fade out 
+      if ($spinner.hasClass('out')) {
+        onHidden();
+      }
+      $spinner.appendTo(document.body);
+      $backdrop.appendTo(document.body);
+    },
+    hide: function() {
+      $spinner.addClass('out').on('webkitAnimationEnd', onHidden);
+      $backdrop.addClass('out');
     }
   };
 }());
