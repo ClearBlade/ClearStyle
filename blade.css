@@ -448,6 +448,7 @@ input[type=checkbox]:disabled {
 }
 .dialog.out {
   -webkit-animation-name: dialogOut;
+  opacity: 0;
 }
 .dialog, 
 .dialog-backdrop { 
