@@ -107,10 +107,25 @@ body {
   position: fixed;
   width: 100%;
   text-align: center;
-  top: 50%;
+  top: 45%;
   font-size: 50px;
   margin-top: -25px;
-  text-shadow: 1px 1px darkgray;
+  text-shadow: 1px 1px #666;
+  z-index: 1050;
+  color: #222;
+}
+.spinner p {
+  font-size: 20px;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  left: 50%;
+  margin-left: -90px;
+  color: #DDD;
+  text-shadow: 1px 1px black;
+  text-align: center;
+  margin-top: 5px;
 }
 .spinner.out {
   -webkit-animation-name: fadeOut;
@@ -126,7 +141,7 @@ body {
   bottom: 0;
   left: 0;
   z-index: 1040;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.5);
   -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 0.2s;
   opacity: 1;
@@ -157,29 +172,17 @@ input:not([type|=radio]):not([type|=checkbox]):focus {
   border: 1px solid rgba(82, 168, 236, 0.8) !important;
 }
 
-input.icon {
-  padding-right: 24px;
-}
-
-input:not([type|=radio]):not([type|=checkbox]) ~ i[class^="icon-"],
-input:not([type|=radio]):not([type|=checkbox]) ~ i[class*=" icon-"] { 
+/* Icon after input.icon is put inside the input */
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class^="icon-"],
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"] { 
   color: gray;
   position: absolute;
   right: 4px;
   line-height: 42px;
 }
-/*
-input:not([type|=radio]):not([type|=checkbox]):focus:invalid,
-input:not([type|=radio]):not([type|=checkbox]):focus.invalid,
-input:not([type|=radio]):not([type|=checkbox]).focus:invalid,
-input:not([type|=radio]):not([type|=checkbox]).focus.invalid {
-  border-color: #ee5f5b !important;
+input:not([type|=radio]):not([type|=checkbox]).icon { 
+  padding-right: 24px !important;
 }
-input:not([type|=radio]):not([type|=checkbox]):invalid,
-input:not([type|=radio]):not([type|=checkbox]).invalid {
-  color: #b94a48;
-}
-*/
 
 /************************************************************************************/
 

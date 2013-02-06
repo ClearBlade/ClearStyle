@@ -150,17 +150,19 @@ var Dialog = (function() {
 
 /* Spinner */
 var Spinner = (function() {
-  var $spinner, $backdrop;
-  var spinnerTemplate = '<div class="spinner"><i class="icon-spin icon-refresh"></i></div>';
+  var $spinner, $backdrop, $spinnerText;
+  var spinnerTemplate = '<div class="spinner"><i class="icon-spin icon-refresh"></i><p></p></div>';
   function onHidden() {
     $spinner.off('webkitTransitionEnd', onHidden);
     $spinner.removeClass('out').remove();
     $backdrop.removeClass('out').remove();
   }
   return {
-    show: function() {
+    show: function(text) {
+      text = text || '';
       if (!$spinner) {
         $spinner = $(spinnerTemplate);
+        $spinnerText = $spinner.find('p');
       }
       if (!$backdrop) {
         $backdrop = $("<div>").addClass("backdrop");
@@ -170,6 +172,7 @@ var Spinner = (function() {
         onHidden();
       }
       $spinner.appendTo(document.body);
+      $spinnerText.text(text);
       $backdrop.appendTo(document.body);
     },
     hide: function() {
