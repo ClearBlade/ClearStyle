@@ -34,6 +34,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Make the page be offset down 45px if there's a toolbar before it */
 .toolbar ~ .page {
   top: 45px;
 }
