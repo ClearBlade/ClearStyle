@@ -38,6 +38,11 @@ body {
   top: 45px;
 }
 
+/* If a tabbar appears, make page bottom offset */
+.tabbar ~ .page {
+  bottom: 45px;
+}
+
 /* This is required to work around a bug that occurs when maps is hit on iOS devices.
  * If this is not applied the contents of the the touch overflow scrolling section the
  * content will be clipped on scroll
@@ -69,7 +74,8 @@ body {
   margin: auto;
   height: 45px;
   z-index: 8;
-  background: url(images/toolbar.png) repeat-x;
+  background: #111 url(images/toolbar.png) repeat-x;
+
 }
 
 .toolbar h1 {
@@ -88,6 +94,61 @@ body {
   white-space: nowrap;
   color: #FFFFFF;
 }
+
+/************************************************************************/
+
+.tabbar {
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 8;
+  height: 45px;
+  background: black url(images/tabbar_bg.png) repeat-x;
+  background-size: auto 45px;
+  line-height: 45px;
+  font-size: 30px;
+
+}
+
+.tabbar a {
+  position: absolute;
+  text-align: center;
+  color: #DDD;
+  bottom: 0;
+}
+.tabbar a:last-child {
+  border-right: none;
+}
+.tabbar a.active {
+  color: #0C86F7;
+  line-height: 37px;
+  background-image: url(images/tabbar_select_bg.png) repeat-x;
+  border-bottom: 4px solid rgba(12,134,247,0.9);
+}
+
+
+/* one item */
+.tabbar a:nth-child(1):nth-last-child(1) { left: 0;   right: 0; }
+
+/* two items */
+.tabbar a:nth-child(1):nth-last-child(2) { left: 0;   right: 51%; }
+.tabbar a:nth-child(2):nth-last-child(1) { left: 51%; right: 0; }
+
+/* three items */
+.tabbar a:nth-child(1):nth-last-child(3) { left: 0;   right: 67%; }
+.tabbar a:nth-child(2):nth-last-child(2) { left: 34%; right: 34%; }
+.tabbar a:nth-child(3):nth-last-child(1) { left: 67%; right: 0; }
+
+/* four items */
+.tabbar a:nth-child(1):nth-last-child(4) { left: 0;   right: 76%; }
+.tabbar a:nth-child(2):nth-last-child(3) { left: 26%; right: 51%; }
+.tabbar a:nth-child(3):nth-last-child(2) { left: 51%; right: 26%; }
+.tabbar a:nth-child(4):nth-last-child(1) { left: 76%; right: 0; }
+
+
 
 /************************************************************************/
 
