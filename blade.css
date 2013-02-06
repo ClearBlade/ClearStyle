@@ -132,22 +132,22 @@ body {
 
 
 /* one item */
-.tabbar a:nth-child(1):nth-last-child(1) { left: 0;   right: 0; }
+.tabbar a:nth-child(1):nth-last-child(1) { left: 0;   right: 0;   }
 
 /* two items */
 .tabbar a:nth-child(1):nth-last-child(2) { left: 0;   right: 51%; }
-.tabbar a:nth-child(2):nth-last-child(1) { left: 51%; right: 0; }
+.tabbar a:nth-child(2):nth-last-child(1) { left: 51%; right: 0;   }
 
 /* three items */
 .tabbar a:nth-child(1):nth-last-child(3) { left: 0;   right: 67%; }
 .tabbar a:nth-child(2):nth-last-child(2) { left: 34%; right: 34%; }
-.tabbar a:nth-child(3):nth-last-child(1) { left: 67%; right: 0; }
+.tabbar a:nth-child(3):nth-last-child(1) { left: 67%; right: 0;   }
 
 /* four items */
 .tabbar a:nth-child(1):nth-last-child(4) { left: 0;   right: 76%; }
 .tabbar a:nth-child(2):nth-last-child(3) { left: 26%; right: 51%; }
 .tabbar a:nth-child(3):nth-last-child(2) { left: 51%; right: 26%; }
-.tabbar a:nth-child(4):nth-last-child(1) { left: 76%; right: 0; }
+.tabbar a:nth-child(4):nth-last-child(1) { left: 76%; right: 0;   }
 
 
 
