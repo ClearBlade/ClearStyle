@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }  
 
-/************************************************************************************************/
+/************************************************************************/
 
 .page {
   position: absolute;
@@ -59,7 +59,7 @@ body {
   text-shadow: rgba(19,129,252,0.4) 1px 1px 1px;
 }
 
-/************************************************************************************************/
+/************************************************************************/
 
 /* Toolbar */ 
 .toolbar {
@@ -89,7 +89,7 @@ body {
   color: #FFFFFF;
 }
 
-/************************************************************************************************/
+/************************************************************************/
 
 /*Loading spinner*/
 @-webkit-keyframes fadeIn {
@@ -100,6 +100,10 @@ body {
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+/* 
+ * .spinner is expected to have an <i class="icon-spin"></i> of some sort inside it
+ * See blade.js Spinner
+ */
 .spinner {
   -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 0.2s;
@@ -114,6 +118,7 @@ body {
   z-index: 1050;
   color: #222;
 }
+/* Loading text */
 .spinner p {
   font-size: 20px;
   width: 180px;
@@ -132,8 +137,11 @@ body {
   opacity: 0;
 }
 
-/************************************************************************************************/
+/************************************************************************/
 
+/*
+ * Generic backdrop, for dialogs and spinner
+ */
 .backdrop {
   position: fixed;
   top: 0;
@@ -151,7 +159,7 @@ body {
   opacity: 0;
 }
 
-/************************************************************************************************/
+/************************************************************************/
 
 /* Text input */
 input:not([type|=radio]):not([type|=checkbox]) {
@@ -172,7 +180,10 @@ input:not([type|=radio]):not([type|=checkbox]):focus {
   border: 1px solid rgba(82, 168, 236, 0.8) !important;
 }
 
-/* Icon after input.icon is put inside the input */
+/*
+ * If you put class="icon" on a text input, then an <i class="icon-something"></i>
+ * as the next element, the icon will be positioned inside the textinput
+ */
 input:not([type|=radio]):not([type|=checkbox]).icon + i[class^="icon-"],
 input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"] { 
   color: gray;
@@ -184,8 +195,9 @@ input:not([type|=radio]):not([type|=checkbox]).icon {
   padding-right: 24px !important;
 }
 
-/************************************************************************************/
+/***************************************************************/
 
+/* List view */
 ul {
   position: relative;
   margin:auto;
@@ -194,6 +206,7 @@ ul {
   margin-bottom: 15px;
   border-left: 5px solid #277bcd;
 }
+/* Full screen list view */
 ul.full {
   left: 0;
   top: 0;
@@ -203,6 +216,7 @@ ul.full {
   border-left: none;
 }
 
+/* Title elements in the listview (eg letters in a Contacts app) */
 ul .title {
   background: #222;
   background-size: 20px 24px;
@@ -220,11 +234,9 @@ ul .title {
   white-space: nowrap;
 }
 
-
-
+/* First and last li have curve on the right borders */
 ul li:first-child {
   border-top-right-radius: 4px;
-
 }
 ul li:last-child {
   border-bottom-right-radius: 4px;
@@ -246,7 +258,7 @@ ul li {
   background: #f0f0f0;
 }
 
-
+/* li with an arrow representing a link / button */
 ul li a,
 ul li .arrow {
   display: block;
@@ -314,15 +326,16 @@ ul li.pair .left:not(a):not(.arrow) ~ .right {
   max-width: 45%;
 }
 
+/* A checkbox in an input pair needs a bit different offset, fix it here */
 ul li.pair input[type=checkbox] {
   bottom: 6px;
 }
-ul li.pair input.right,
-ul li.pair .right.full {
+/* Any input on a right element gets a small fix */
+ul li.pair input.right { 
   right: 8px;
 }
 
-
+/* Input pair: label and a textfield or select box */
 ul li.input .left {
   width: 36%;
   padding-right: 5px;
@@ -363,9 +376,12 @@ ul li.input select:active {
 }
 
 
-/************************************************************************************************/
+/************************************************************************/
 
-/* Switch */
+/* 
+ * Switch
+ * Change all checkboxes to ios-like switches
+ */
 input[type=checkbox]:after {
   -webkit-appearance: none;
   appearance: none;
@@ -395,7 +411,7 @@ input[type=checkbox]:disabled {
   background-position: -27px;
 }
 
-/*********************************************************************************************/
+/**********************************************************************/
 /* Dialog */
 
 @-webkit-keyframes dialogIn {
@@ -473,6 +489,10 @@ input[type=checkbox]:disabled {
 .dialog-footer .btn {
   position: absolute;
 }
+/*
+ * Spent too long fiddling with css to make the buttons right with percents,
+ * eventually gave up and used exact math
+ */
 .dialog-footer .btn.full {
   left: 3px;
   right: 3px;
@@ -487,9 +507,12 @@ input[type=checkbox]:disabled {
 }
 
 
-/************************************************************************************************/
+/************************************************************************/
 
-/* Toast */
+/* 
+ * Toast
+ * Little notification slides up from bottom, and slides down later (requires js)
+ */
 @-webkit-keyframes toastIn {
   0% {  -webkit-transform: translate3d(0, 100%, 0); }
   100% { -webkit-transform: translate3d(0, 0, 0);
@@ -532,7 +555,7 @@ input[type=checkbox]:disabled {
   -webkit-transform: translate3d(0,100%,0);
 }
 
-/************************************************************************************************/
+/************************************************************************/
 
 
 /*  Font Awesome 3.0
@@ -979,7 +1002,7 @@ ul.icons li [class*=" icon-"] {
 .icon-folder-open-alt:before      { content: "\f115"; }
 
 
-/************************************************************************************************/
+/************************************************************************/
 /* Buttons from twitter bootstrap */
 
 .btn {
@@ -1348,7 +1371,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 
-/************************************************************************************************/
+/************************************************************************/
 /* Media Queries */
 
 
