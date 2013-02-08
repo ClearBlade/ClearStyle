@@ -35,12 +35,14 @@ body {
 }
 
 /* Make the page be offset down 45px if there's a toolbar before it */
-.toolbar ~ .page {
+.toolbar ~ .page,
+.page.with-toolbar {
   top: 45px;
 }
 
 /* If a tabbar appears, make page bottom offset */
-.tabbar ~ .page {
+.tabbar ~ .page,
+.page.with-tabbar {
   bottom: 45px;
 }
 
@@ -76,7 +78,6 @@ body {
   height: 45px;
   z-index: 8;
   background: #111 url(images/toolbar.png) repeat-x;
-
 }
 
 .toolbar h1 {
@@ -99,7 +100,6 @@ body {
 /************************************************************************/
 
 .tabbar {
-
   position: absolute;
   bottom: 0;
   left: 0;
@@ -111,7 +111,6 @@ body {
   background-size: auto 45px;
   line-height: 45px;
   font-size: 30px;
-
 }
 
 .tabbar a {
@@ -119,6 +118,7 @@ body {
   text-align: center;
   color: #DDD;
   bottom: 0;
+  text-decoration: none;
 }
 .tabbar a:last-child {
   border-right: none;
@@ -246,16 +246,43 @@ input:not([type|=radio]):not([type|=checkbox]):focus {
  * If you put class="icon" on a text input, then an <i class="icon-something"></i>
  * as the next element, the icon will be positioned inside the textinput
  */
+ /*
+ * Try to not make people have 'input' class on their icons.
+ *  by trying to just match an icon right after an input
+ * Sometimes the sibling selector + isn't enough though, 
+ *  so we have to have <i class="icon-blah input"></i>
+ */
 input:not([type|=radio]):not([type|=checkbox]).icon + i[class^="icon-"],
-input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"] { 
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"],
+i[class^="icon-"].input,
+i[class*=" icon-"].input { 
   color: gray;
   position: absolute;
-  right: 4px;
-  line-height: 42px;
+  display: block;
+  right: 8px;
 }
 input:not([type|=radio]):not([type|=checkbox]).icon { 
   padding-right: 24px !important;
 }
+input:not([type|=radio]):not([type|=checkbox]).icon.left { 
+  padding-right: 2px;
+  padding-left: 26px;
+}
+
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class^="icon-"],
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"],
+i[class^="icon-"].input,
+i[class*=" icon-"].input {
+  right: 4px;
+  line-height: 42px;   
+} 
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class^="icon-"].left,
+input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"].left,
+i[class^="icon-"].input.left,
+i[class*=" icon-"].input.left {
+  right: auto;
+  left: 4px;
+} 
 
 /***************************************************************/
 
@@ -277,6 +304,40 @@ ul.full {
   position: absolute;
   border-left: none;
 }
+
+/* 
+ * Input at the top of a full list (eg contacts search in native apps).
+ * The way to do the html is:
+ *     <ul class="full"><div class="input"> <input/> </div></ul>
+ */
+ul.full > .input {
+  height: 42px;
+}
+ul.full > .input input {
+  position: absolute;
+  display: block;
+  width: auto;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  margin: auto;
+}
+ul.full > .input input.icon ~ i[class^="icon-"],
+ul.full > .input input.icon ~ i[class*=" icon-"]
+ul.full > .input i[class^="icon-"].input,
+ul.full > .input i[class*=" icon-"].input { 
+  position: absolute;
+  right: 10px;
+}
+ul.full > .input input.icon ~ i[class^="icon-"].left,
+ul.full > .input input.icon ~ i[class*=" icon-"].left,
+ul.full > .input i[class^="icon-"].input.left,
+ul.full > .input i[class*=" icon-"].input.leftt { 
+  right: auto;
+  left: 10px;
+}
+    
 
 /* Title elements in the listview (eg letters in a Contacts app) */
 ul .title {
@@ -559,6 +620,7 @@ input[type=checkbox]:disabled {
 .dialog-footer .btn.full {
   left: 3px;
   right: 3px;
+  width: auto !important;
 }
 .dialog-footer .btn.left {
   left: 3px;
@@ -1093,6 +1155,10 @@ ul.icons li [class*=" icon-"] {
   -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
   margin-top: 2px;
   margin-bottom: 2px;
+}
+
+.btn.full {
+  width: 100%;
 }
 
                                                 

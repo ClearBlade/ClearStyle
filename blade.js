@@ -157,14 +157,14 @@ var Spinner = (function() {
     $spinner.removeClass('out').remove();
     $backdrop.removeClass('out').remove();
   }
+  return {show:function(){},hide:function(){}};
+  /*
   return {
     show: function(text) {
       text = text || '';
       if (!$spinner) {
         $spinner = $(spinnerTemplate);
         $spinnerText = $spinner.find('p');
-      }
-      if (!$backdrop) {
         $backdrop = $("<div>").addClass("backdrop");
       }
       //If it's fading out, just finish fade out 
@@ -180,4 +180,5 @@ var Spinner = (function() {
       $backdrop.addClass('out');
     }
   };
+  */
 }());
