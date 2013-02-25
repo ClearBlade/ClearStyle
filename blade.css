@@ -7,15 +7,28 @@ body {
   font-family: Helvetica;
   background: #FFFFFF url(images/bg.png) repeat;
   color: #000000;
-  -webkit-user-select: none;
   -webkit-text-size-adjust: none;
-  -webkit-touch-callout:none;
-  -webkit-user-select:none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   width: 100%;
   height: 100%;
   overflow: hidden;
 }  
+
+[contenteditable], textarea {
+  background: white;
+  border: 1px solid #DDD;
+  padding: 8px;
+  font-size: 16px;
+  line-height: 18px;
+  overflow: auto;
+  margin: auto;
+  text-shadow: none;
+}
+textarea {
+  width: 100%;
+  height: 240px;
+  padding: 0;
+}
 
 /************************************************************************/
 
@@ -56,7 +69,8 @@ body {
   -webkit-transform: translate3d(0,0,0);
 } 
 
-.page > h2 {
+.page > h2,
+.page h2.content-title {
   margin: 0 0 0 14px;
   padding-top: 4px;
   font-size: inherit;
@@ -99,6 +113,14 @@ body {
 
 /************************************************************************/
 
+@-webkit-keyframes tabbarIn {
+  0% { -webkit-transform: translateY(100%); opacity: 1; }
+  100% { -webkit-transform: translateY(0); opacity: 1; }
+}
+@-webkit-keyframes tabbarOut {
+  0% { -webkit-transform: translateY(0); opacity: 1; }
+  100% { -webkit-transform: translateY(100%); opacity: 1; }
+}
 .tabbar {
   position: absolute;
   bottom: 0;
@@ -111,8 +133,12 @@ body {
   background-size: auto 45px;
   line-height: 45px;
   font-size: 30px;
+  -webkit-animation: tabbarIn 0.4s;
 }
-
+.tabbar.out {
+  opacity: 0;
+  -webkit-animation: tabbarOut 0.4s;
+}
 .tabbar a {
   position: absolute;
   text-align: center;
@@ -124,10 +150,10 @@ body {
   border-right: none;
 }
 .tabbar a.active {
-  color: #0C86F7;
+  color: #69b7ff;
   line-height: 37px;
   background-image: url(images/tabbar_select_bg.png) repeat-x;
-  border-bottom: 4px solid rgba(12,134,247,0.9);
+  border-bottom: 4px solid rgba(105, 183, 255, 0.9);
 }
 
 
@@ -281,8 +307,23 @@ input:not([type|=radio]):not([type|=checkbox]).icon + i[class*=" icon-"].left,
 i[class^="icon-"].input.left,
 i[class*=" icon-"].input.left {
   right: auto;
-  left: 4px;
+  left: 6px;
 } 
+
+.input-box {
+  margin-bottom:20px;
+  background:white;
+  padding:0px;
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+}
+.input-box input {
+  width:100%;
+  height:50px;
+  -webkit-border-radius:0px !important;
+}
 
 /***************************************************************/
 
@@ -341,7 +382,7 @@ ul.full > .input i[class*=" icon-"].input.leftt {
 
 /* Title elements in the listview (eg letters in a Contacts app) */
 ul .title {
-  background: #222;
+  background: #292929;
   background-size: 20px 24px;
   line-height: 24px;
 
@@ -355,6 +396,8 @@ ul .title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  border-bottom: 1px solid #1381FC;
 }
 
 /* First and last li have curve on the right borders */
@@ -496,6 +539,16 @@ ul li.input select:active {
   background-size: 28px 28px;
   background-color: #046DE6;
 
+}
+
+ul li p {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
 }
 
 
@@ -1404,6 +1457,7 @@ input[type="button"].btn-block {
   background-color: #080808 \9;
 }
 .btn-toolbar {
+  z-index:1000;
   position:absolute;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -1431,6 +1485,7 @@ input[type="button"].btn-block {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 
+  z-index: 1000;
 }    
 .btn-toolbar.back:before {
   content: '';

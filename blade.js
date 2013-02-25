@@ -157,8 +157,6 @@ var Spinner = (function() {
     $spinner.removeClass('out').remove();
     $backdrop.removeClass('out').remove();
   }
-  return {show:function(){},hide:function(){}};
-  /*
   return {
     show: function(text) {
       text = text || '';
@@ -172,7 +170,7 @@ var Spinner = (function() {
         onHidden();
       }
       $spinner.appendTo(document.body);
-      $spinnerText.text(text);
+      $spinnerText.text(text || '');
       $backdrop.appendTo(document.body);
     },
     hide: function() {
@@ -180,5 +178,4 @@ var Spinner = (function() {
       $backdrop.addClass('out');
     }
   };
-  */
 }());
