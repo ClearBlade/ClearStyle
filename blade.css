@@ -9,54 +9,25 @@ body {
   color: #000000;
   -webkit-text-size-adjust: none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
 }  
-
-[contenteditable], textarea {
-  background: white;
-  border: 1px solid #DDD;
-  padding: 8px;
-  font-size: 16px;
-  line-height: 18px;
-  overflow: auto;
-  margin: auto;
-  text-shadow: none;
-}
-textarea {
-  width: 100%;
-  height: 240px;
-  padding: 0;
-}
 
 /************************************************************************/
 
 .page {
-  position: absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  right:0;
-  margin: auto;
-  padding: 10px;
   text-shadow: #BBB 0px 0px 2px;
   background: url(images/bg.png) repeat;
+  padding: 10px;
+}
+
+.scroll {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-/* Make the page be offset down 45px if there's a toolbar before it */
-.toolbar ~ .page,
-.page.with-toolbar {
-  top: 45px;
-}
-
-/* If a tabbar appears, make page bottom offset */
-.tabbar ~ .page,
-.page.with-tabbar {
-  bottom: 45px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
 }
 
 /* This is required to work around a bug that occurs when maps is hit on iOS devices.
@@ -65,9 +36,21 @@ textarea {
  * http://stackoverflow.com/questions/7808110/css3-property-webkit-overflow-scrollingtouch-error
  * http://stackoverflow.com/a/7893031/238459
 */ 
-.page * {
+.scroll * {
   -webkit-transform: translate3d(0,0,0);
 } 
+
+.with-toolbar {
+  top: 45px;
+}
+
+.with-tabbar {
+  bottom: 45px;
+}
+
+.page.full {
+  padding: 0;
+}
 
 .page > h2,
 .page h2.content-title {
@@ -138,6 +121,7 @@ textarea {
 .tabbar.out {
   opacity: 0;
   -webkit-animation: tabbarOut 0.4s;
+  -webkit-transform: translateY(100%);
 }
 .tabbar a {
   position: absolute;
@@ -249,6 +233,25 @@ textarea {
 
 /************************************************************************/
 
+/* Textarea/contenteditable area */
+[contenteditable], textarea {
+  background: white;
+  border: 1px solid #DDD;
+  padding: 8px;
+  font-size: 16px;
+  line-height: 18px;
+  overflow: auto;
+  margin: auto;
+  text-shadow: none;
+}
+textarea {
+  width: 100%;
+  height: 240px;
+  padding: 0;
+}
+
+/************************************************************************/
+
 /* Text input */
 input:not([type|=radio]):not([type|=checkbox]) {
   -webkit-box-sizing: border-box;
@@ -266,6 +269,10 @@ input:not([type|=radio]):not([type|=checkbox]) {
 input:not([type|=radio]):not([type|=checkbox]).focus,
 input:not([type|=radio]):not([type|=checkbox]):focus {
   border: 1px solid rgba(82, 168, 236, 0.8) !important;
+}
+input:not(type|=radio]):not(type|=checkbox]):disabled,
+input:not(type|=radio]):not(type|=checkbox]).disabled {
+  background: #F0F0F0;
 }
 
 /*
@@ -330,7 +337,7 @@ i[class*=" icon-"].input.left {
 /* List view */
 ul {
   position: relative;
-  margin:auto;
+  margin: auto;
   padding: 0;
   margin-top: 15px;
   margin-bottom: 15px;
@@ -338,11 +345,7 @@ ul {
 }
 /* Full screen list view */
 ul.full {
-  left: 0;
-  top: 0;
-  right: 0;
-  margin: 0;
-  position: absolute;
+  margin: auto;
   border-left: none;
 }
 
@@ -397,7 +400,7 @@ ul .title {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  border-bottom: 1px solid #1381FC;
+  border-bottom: 1px solid rgba(19, 129, 252, 0.9);
 }
 
 /* First and last li have curve on the right borders */

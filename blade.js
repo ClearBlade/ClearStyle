@@ -157,14 +157,17 @@ var Spinner = (function() {
     $spinner.removeClass('out').remove();
     $backdrop.removeClass('out').remove();
   }
+  function createSpinner() {
+    if (!$spinner) {
+      $spinner = $(spinnerTemplate);
+      $spinnerText = $spinner.find('p');
+      $backdrop = $("<div>").addClass("backdrop");
+    }
+  }
   return {
     show: function(text) {
       text = text || '';
-      if (!$spinner) {
-        $spinner = $(spinnerTemplate);
-        $spinnerText = $spinner.find('p');
-        $backdrop = $("<div>").addClass("backdrop");
-      }
+      if (!$spinner) createSpinner();
       //If it's fading out, just finish fade out 
       if ($spinner.hasClass('out')) {
         onHidden();
@@ -174,6 +177,7 @@ var Spinner = (function() {
       $backdrop.appendTo(document.body);
     },
     hide: function() {
+      if (!$spinner) createSpinner();
       $spinner.addClass('out').on('webkitAnimationEnd', onHidden);
       $backdrop.addClass('out');
     }
