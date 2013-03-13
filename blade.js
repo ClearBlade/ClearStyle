@@ -17,6 +17,10 @@ $(function() {
       $(this).trigger('click');
     }
   });
+
+  if (window.navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+    $("body").attr("data-platform", "android");
+  }
 }); 
 
 // String.format: simple string formatter
@@ -39,29 +43,28 @@ var Toast = (function() {
     this.element = $("<div>").addClass("toast").text(text);
   }
   Toast.prototype.show = function(time, doneCallback) {
-    var self = this;
-    self.element.removeClass("out").appendTo("body");
-    self.callback = doneCallback;
+    this.element.removeClass("out").appendTo("body");
+    if ($(".tabbar").length) {
+      this.element.addClass("with-tabbar");
+    }
+    this.callback = doneCallback;
     //Once it's fully shown, start hide timer
-    self.element.bind('webkitAnimationEnd', function() {
-      self.element.unbind('webkitAnimationEnd');
-      setTimeout(function() {
-        self.hide();
-      }, time || DEFAULT_TIME);
+    var self = this;
+    setTimeout(function() {
+      self.element.addClass('in').one('webkitTransitionEnd', function() {
+        setTimeout(function() {
+          self.hide();
+        }, time || DEFAULT_TIME);
+      });
     });
   };
   Toast.prototype.hide = function() {
-    var self = this;
-    self.element.addClass("out");
-    self.element.bind('webkitAnimationEnd', function() {
-      self._onClose();
-    });
+    this.element.removeClass("in");
+    this.element.bind('webkitTransitionEnd', this._onClose.bind(this));
   };
   Toast.prototype._onClose = function() {
-    this.element
-      .removeClass('out')
-      .unbind('webkitAnimationEnd')
-      .remove();
+    this.element.unbind('webkitTransitionEnd');
+    this.element.removeClass("in").remove();
     this.callback && this.callback();
   };
   return {
@@ -154,8 +157,12 @@ var Spinner = (function() {
   var spinnerTemplate = '<div class="spinner"><i class="icon-spin icon-refresh"></i><p></p></div>';
   function onHidden() {
     $spinner.off('webkitTransitionEnd', onHidden);
-    $spinner.removeClass('out').remove();
-    $backdrop.removeClass('out').remove();
+    $spinner.removeClass('out');
+    $backdrop.removeClass('out').css('background','');
+    if ($('.spinner', $("body")).length) {
+      $spinner.remove();
+      $backdrop.remove();
+    }
   }
   function createSpinner() {
     if (!$spinner) {
@@ -178,7 +185,8 @@ var Spinner = (function() {
     },
     hide: function() {
       if (!$spinner) createSpinner();
-      $spinner.addClass('out').on('webkitAnimationEnd', onHidden);
+      $spinner.addClass('out');
+      $spinner.on('webkitTransitionEnd', onHidden);
       $backdrop.addClass('out');
     }
   };
