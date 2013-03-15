@@ -169,11 +169,21 @@ body {
  * See blade.js Spinner
  */
 .spinner {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  margin: auto;
   opacity: 1;
   -webkit-transition: 0.3s linear;
-  position: fixed;
-  width: 100%;
-  text-align: center;
+}
+.spinner i,
+.spinner p {
+  position: absolute;
+  margin-top: 45%;
+  left: 50%;
+  margin-left: -25px;
   top: 45%;
   font-size: 50px;
   margin-top: -25px;
@@ -189,6 +199,7 @@ body {
   line-height: 30px;
   position: absolute;
   left: 50%;
+  top: 50%;
   margin-left: -90px;
   color: #DDD;
   text-shadow: 1px 1px black;
@@ -205,7 +216,7 @@ body {
  * Generic backdrop, for dialogs and spinner
  */
 .backdrop {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
@@ -596,7 +607,7 @@ input[type=checkbox]:disabled {
 .dialog {
   -webkit-animation-name: dialogIn;
   opacity: 1;
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   width: 300px;
