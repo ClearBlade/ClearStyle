@@ -21,24 +21,14 @@ body {
 
 .scroll {
   overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  position: absolute;
+  overflow-y: scroll;
   left: 0;
   top: 0;
-  bottom: 0;
   right: 0;
+  bottom: 0;
+  position: absolute;
+  margin: auto;
 }
-
-/* This is required to work around a bug that occurs when maps is hit on iOS devices.
- * If this is not applied the contents of the the touch overflow scrolling section the
- * content will be clipped on scroll
- * http://stackoverflow.com/questions/7808110/css3-property-webkit-overflow-scrollingtouch-error
- * http://stackoverflow.com/a/7893031/238459
-*/ 
-.scroll * {
-  -webkit-transform: translate3d(0,0,0);
-} 
 
 .page.full {
   padding: 0;
@@ -216,11 +206,12 @@ body {
  * Generic backdrop, for dialogs and spinner
  */
 .backdrop {
-  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  position: absolute;
+  margin: auto;
   z-index: 1040;
   background: rgba(0,0,0,0.5);
   opacity: 1;
