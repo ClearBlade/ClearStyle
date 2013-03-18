@@ -19,7 +19,8 @@ body {
   padding: 10px;
 }
 
-.scroll {
+.scrollable {
+  -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
   overflow-y: scroll;
   left: 0;
