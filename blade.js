@@ -20,34 +20,11 @@ $(function() {
 
   var userAgent = window.navigator.userAgent.toLowerCase();
   if (userAgent.indexOf('android') > -1) {
-    if (userAgent.indexOf("android 2.") > -1) {
-      iscroll();
-      $("body").attr("data-version", "2");
-    }
     $("body").attr("data-platform", "android");
   } else {
     $("body").attr("data-platform", "ios");
   }
 }); 
-
-var ISCROLL_PATH = "iscroll-lite.js";
-function iscroll() {
-  var script = document.createElement("script");
-  script.src = ISCROLL_PATH;
-  script.type = "text/javascript";
-  script.onload = function() {
-    new iScroll($(".scrollable")[0]);
-    $(document).on("DOMNodeInserted", function(e) {
-      if (e.srcElement.className.indexOf("scrollable") > -1) {
-        new iScroll(e.srcElement);
-      }
-    });
-  };
-  document.getElementsByTagName("head")[0].appendChild(script);
-  document.addEventListener('touchmove', function(e) {
-    e.preventDefault();
-  });
-}
 
 // String.format: simple string formatter
 // Example:
@@ -55,7 +32,7 @@ function iscroll() {
 String.prototype.format = function() {
   var args = Array.prototype.slice.call(arguments);
   return args.reduce(function(prev, current, index) {
-    return prev.replace('$'+index, current);
+    return prev.replace(new RegExp('\\$'+index, 'g'), current);
   }, this);
 };
 String.prototype.escapeHTML = function(str) {

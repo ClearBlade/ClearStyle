@@ -16,11 +16,10 @@ body {
 .page {
   text-shadow: #BBB 0px 0px 2px;
   background: url(images/bg.png) repeat;
-  padding: 10px;
+  padding: 8px;
 }
 
-.scrollable {
-  -webkit-overflow-scrolling: touch;
+.scroll {
   overflow-x: hidden;
   overflow-y: scroll;
   left: 0;
@@ -29,6 +28,7 @@ body {
   bottom: 0;
   position: absolute;
   margin: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .page.full {
@@ -308,7 +308,7 @@ i[class*=" icon-"].input.left {
 } 
 
 .input-box {
-  margin-bottom:20px;
+  margin-bottom:13px;
   background:white;
   padding:0px;
   width:100%;
