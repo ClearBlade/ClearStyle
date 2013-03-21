@@ -27,8 +27,6 @@
 					wkversion = webkit && webkit[1],
 					wkLte534 = webkit && wkversion >= 534;
 				return (
-          /* Google Chrome */
-          ua.match( /Chrome/ ).length > 0 ||
 					/* Android 3+ with webkit gte 534
 					~: Mozilla/5.0 (Linux; U; Android 3.0; en-us; Xoom Build/HRI39) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13 */
 					ua.match( /Android ([0-9]+)/ ) && RegExp.$1 >= 3 && wkLte534 ||

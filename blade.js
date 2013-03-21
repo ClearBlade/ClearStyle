@@ -21,6 +21,9 @@ $(function() {
   var userAgent = window.navigator.userAgent.toLowerCase();
   if (userAgent.indexOf('android') > -1) {
     $("body").attr("data-platform", "android");
+    if (userAgent.indexOf("android 2") > -1) {
+      $("body").attr("data-version", "2");
+    }
   } else {
     $("body").attr("data-platform", "ios");
   }
@@ -111,10 +114,10 @@ var Dialog = (function() {
     self.callback = callback;
     var buttonOk = self.element.find(".btn-primary");
     var buttonCancel = self.element.find(".btn-cancel");
-    buttonOk.bind('tap', function() {
+    buttonOk.bind('click tap', function() {
       self.hide();
     });
-    buttonCancel.bind('tap', function() {
+    buttonCancel.bind('click tap', function() {
       self.hide(true);
     });
   };
@@ -122,7 +125,7 @@ var Dialog = (function() {
     var self = this;
     self.element.addClass("out");
     self.backdrop.addClass("out");
-    self.element.find('.btn').unbind('tap');
+    self.element.find('.btn').unbind('click tap');
     self.element.bind('webkitAnimationEnd', function() {
       self._onClose(wasCancelled);
     });
