@@ -11,6 +11,7 @@
 		// The following attempts to determine whether the browser has native overflow support
 		// so we can enable it but not polyfill
 		overflowProbablyAlreadyWorks = 
+      navigator.userAgent.indexOf("Chrome") > -1 ||
 			// Features-first. iOS5 overflow scrolling property check - no UA needed here. thanks Apple :)
 			"WebkitOverflowScrolling" in docElem.style ||
 			// Touch events aren't supported and screen width is greater than X

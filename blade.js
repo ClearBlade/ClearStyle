@@ -7,17 +7,6 @@ $(function() {
   //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
   document.body.ontouchstart = function() {};
 
-  $(document).on('swipeLeft', 'input[type="checkbox"]', function() {
-    if (this.checked) {
-      $(this).trigger('click');
-    }
-  });
-  $(document).on('swipeRight', 'input[type="checkbox"]', function() {
-    if (!this.checked) {
-      $(this).trigger('click');
-    }
-  });
-
   var userAgent = window.navigator.userAgent.toLowerCase();
   if (userAgent.indexOf('android') > -1) {
     $("body").attr("data-platform", "android");
@@ -28,6 +17,7 @@ $(function() {
     $("body").attr("data-platform", "ios");
   }
 }); 
+
 
 // String.format: simple string formatter
 // Example:
@@ -46,33 +36,31 @@ String.prototype.escapeHTML = function(str) {
 var Toast = (function() {
   var DEFAULT_TIME = 4000;
   function Toast(text) {
-    this.element = $("<div>").addClass("toast").text(text);
-  }
-  Toast.prototype.show = function(time, doneCallback) {
-    this.element.removeClass("out").appendTo("body");
-    if ($(".tabbar").length) {
-      this.element.addClass("with-tabbar");
-    }
-    this.callback = doneCallback;
-    //Once it's fully shown, start hide timer
     var self = this;
-    setTimeout(function() {
-      self.element.addClass('in').one('webkitTransitionEnd', function() {
+    self.element = $("<div>").addClass("toast").text(text);
+    self.show = function(time, doneCallback) {
+      self.element.appendTo("body");
+      if ($(".tabbar:not(.out)").length) {
+        self.element.addClass("with-tabbar");
+      }
+      self.callback = doneCallback;
+      //Once it's fully shown, start hide timer
+      setTimeout(function() {
+        self.element.addClass("in");
         setTimeout(function() {
           self.hide();
-        }, time || DEFAULT_TIME);
-      });
-    });
-  };
-  Toast.prototype.hide = function() {
-    this.element.removeClass("in");
-    this.element.bind('webkitTransitionEnd', this._onClose.bind(this));
-  };
-  Toast.prototype._onClose = function() {
-    this.element.unbind('webkitTransitionEnd');
-    this.element.removeClass("in").remove();
-    this.callback && this.callback();
-  };
+        }, (time || DEFAULT_TIME) + 1000);
+      }, 1);
+    };
+    self.hide = function() {
+      self.element.removeClass("in");
+      setTimeout(self._onClose, 1000);
+    };
+    self._onClose = function() {
+      self.element.removeClass("in").remove();
+      self.callback && self.callback();
+    };
+  }
   return {
     show: function(text, time, callback) {
       (new Toast(text)).show(time, callback);
@@ -111,30 +99,33 @@ var Dialog = (function() {
   Dialog.prototype.show = function(callback) {
     var self = this;
     $("body").append(self.element).append(self.backdrop);
+    setTimeout(function() {
+      self.element.addClass("in");
+    }, 1);
     self.callback = callback;
-    var buttonOk = self.element.find(".btn-primary");
-    var buttonCancel = self.element.find(".btn-cancel");
-    buttonOk.bind('click tap', function() {
+    self.buttonOk = self.element.find(".btn-primary");
+    self.buttonCancel = self.element.find(".btn-cancel");
+    self.buttonOk.bind('click tap', function() {
       self.hide();
     });
-    buttonCancel.bind('click tap', function() {
+    self.buttonCancel.bind('click tap', function() {
       self.hide(true);
     });
   };
   Dialog.prototype.hide = function(wasCancelled) {
     var self = this;
-    self.element.addClass("out");
+    self.element.removeClass("in");
     self.backdrop.addClass("out");
-    self.element.find('.btn').unbind('click tap');
-    self.element.bind('webkitAnimationEnd', function() {
+    self.buttonOk.unbind('click tap');
+    self.buttonCancel.unbind('click tap');
+    setTimeout(function() {
       self._onClose(wasCancelled);
-    });
+    }, 300);
   };
   Dialog.prototype._onClose = function(wasCancelled) {
     this.backdrop.removeClass("out").remove();
     this.element
       .removeClass("out")
-      .unbind('webkitAnimationEnd')
       .remove();
     this.callback && this.callback(wasCancelled);
   };
@@ -145,8 +136,12 @@ var Dialog = (function() {
     message: function(title, text, callback) {
       (new Dialog(title, text, OK_BUTTON)).show(callback);
     },
-    confirm: function(title, text, cancelText, callback) {
-      (new Dialog(title, text, OK_BUTTON, cancelText)).show(callback);
+    confirm: function(title, text, cancelText, okText, callback) {
+      if (typeof okText == "function") {
+        callback = okText;
+        okText = OK_BUTTON;
+      }
+      (new Dialog(title, text, okText || OK_BUTTON, cancelText)).show(callback);
     },
     error: function(error, callback) {
       if (error.data) error = error.data;

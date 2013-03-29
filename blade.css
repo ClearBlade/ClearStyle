@@ -9,6 +9,7 @@ body {
   color: #000000;
   -webkit-text-size-adjust: none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+  word-wrap: break-word;
 }  
 
 /************************************************************************/
@@ -26,6 +27,7 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
+  max-width: 100%;
   position: absolute;
   margin: auto;
   -webkit-overflow-scrolling: touch;
@@ -63,13 +65,15 @@ body {
 .toolbar h1 {
   position: absolute;
   overflow: hidden;
-  left: 50%;
-  margin: -1px 0 0 -75px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  margin: -1px 0 0  ;
   padding-top: 10px;
   height: 45px;
   font-family: Arial;
   font-size: 22px;
-  width: 150px;
   text-shadow: rgba(0, 0, 0, 0.75) 0px -1px 2px;
   text-align: center;
   text-overflow: ellipsis;
@@ -78,15 +82,6 @@ body {
 }
 
 /************************************************************************/
-
-@-webkit-keyframes tabbarIn {
-  0% { -webkit-transform: translateY(100%); opacity: 1; }
-  100% { -webkit-transform: translateY(0); opacity: 1; }
-}
-@-webkit-keyframes tabbarOut {
-  0% { -webkit-transform: translateY(0); opacity: 1; }
-  100% { -webkit-transform: translateY(100%); opacity: 1; }
-}
 .tabbar {
   position: absolute;
   bottom: 0;
@@ -99,12 +94,9 @@ body {
   background-size: auto 45px;
   line-height: 45px;
   font-size: 30px;
-  -webkit-animation: tabbarIn 0.4s;
 }
 .tabbar.out {
-  opacity: 0;
-  -webkit-animation: tabbarOut 0.4s;
-  -webkit-transform: translateY(100%);
+  display: none;
 }
 .tabbar a {
   position: absolute;
@@ -167,7 +159,7 @@ body {
   position: absolute;
   margin: auto;
   opacity: 1;
-  -webkit-transition: 0.3s linear;
+  -webkit-transition: 0.15s linear;
 }
 .spinner i,
 .spinner p {
@@ -216,7 +208,7 @@ body {
   z-index: 1040;
   background: rgba(0,0,0,0.5);
   opacity: 1;
-  -webkit-transition: 0.3s linear;
+  -webkit-transition: 0.15s linear;
 }
 .backdrop.out {
   opacity: 0;
@@ -308,18 +300,27 @@ i[class*=" icon-"].input.left {
 } 
 
 .input-box {
-  margin-bottom:13px;
-  background:white;
   padding:0px;
   width:100%;
   margin-left:auto;
   margin-right:auto;
-  margin-top:10px;
+  margin-bottom: 6px;
+  text-align: center;
+  height: auto;
 }
 .input-box input {
-  width:100%;
-  height:50px;
-  -webkit-border-radius:0px !important;
+  -webkit-border-radius: 0px !important;
+  text-align: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  height: 45px;
+}
+.input-box.small input {
+  height: 40px;
 }
 
 /***************************************************************/
@@ -486,11 +487,12 @@ ul li.pair .left:not(a):not(.arrow) ~ .right {
 }
 
 /* A checkbox in an input pair needs a bit different offset, fix it here */
-ul li.pair input[type=checkbox] {
+ul li.pair input[type=checkbox],
+ul li.pair .switch {
   bottom: 6px;
 }
 /* Any input on a right element gets a small fix */
-ul li.pair input.right { 
+ul li.pair input.right,
   right: 8px;
 }
 
@@ -535,6 +537,7 @@ ul li.input select:active {
 }
 
 ul li p {
+  word-wrap: break-word;
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 6px;
@@ -551,17 +554,22 @@ ul li p {
  * Switch
  * Change all checkboxes to ios-like switches
  */
-input[type=checkbox]:after {
+input[type=checkbox]:after,
+.switch:after {
   -webkit-appearance: none;
   appearance: none;
   border: none;
   content: '';
   position: absolute;
+  left: 0;
+  top: 0;
   background: url(images/switch-mask.png);
   width: 105px;
   height: 30px;
 }
-input[type=checkbox] {
+input[type=checkbox],
+.switch {
+  display: inline-block;
   -webkit-appearance: none;
   appearance: none;
   border: none;
@@ -572,10 +580,17 @@ input[type=checkbox] {
   overflow: hidden;
   -webkit-transition: background-position 0.15s;
 }
-input[type=checkbox]:checked {
+/* Transition on background doesn't work on android  2.2 */
+[data-platform="android"][data-version="2"] input[type=checkbox],
+[data-platform="android"][data-version="2"] .switch {
+  -webkit-transition: none;
+}
+input[type=checkbox]:checked,
+.switch.checked {
   background-position: 0px;
 }
-input[type=checkbox]:disabled {
+input[type=checkbox]:disabled,
+.switch.disabled {
   background: url(images/switch_disabled.png);
   background-position: -27px;
 }
@@ -597,8 +612,6 @@ input[type=checkbox]:disabled {
 }
 
 .dialog {
-  -webkit-animation-name: dialogIn;
-  opacity: 1;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -614,14 +627,17 @@ input[type=checkbox]:disabled {
   background-clip: padding-box;
   z-index: 1050;
   text-align: center;
-}
-.dialog.out {
-  -webkit-animation-name: dialogOut;
+
   opacity: 0;
+  -webkit-transform: scale(0.5, 0.5);
+}
+.dialog.in {
+  opacity: 1;
+  -webkit-transform: scale(1, 1);
 }
 .dialog, 
 .dialog-backdrop { 
-  -webkit-animation-duration: 0.2s;
+  -webkit-transition: all 0.2s linear;
 }
 
 .dialog-header {
@@ -659,6 +675,12 @@ input[type=checkbox]:disabled {
 .dialog-footer .btn {
   position: absolute;
 }
+
+.dialog .btn {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 /*
  * Spent too long fiddling with css to make the buttons right with percents,
  * eventually gave up and used exact math
@@ -686,8 +708,10 @@ input[type=checkbox]:disabled {
  */
 
 .toast {
-  -webkit-transition: -webkit-transform 1s ease-in-out;
+  opacity: 0;
+  -webkit-transition: 1s ease-in-out;
   -webkit-transform: translateY(100%);
+
   position: absolute;
   bottom: 0px;
   left: 50%;
@@ -697,7 +721,6 @@ input[type=checkbox]:disabled {
   padding: 10px;
   padding-bottom: 5px;
   border: 2px solid #1381FC;
-  border-bottom: none;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   background: rgba(130, 130, 130, 0.8);
@@ -711,6 +734,7 @@ input[type=checkbox]:disabled {
 }
 
 .toast.in {
+  opacity: 1;
   -webkit-transform: translateY(0);
 }
 
@@ -1170,7 +1194,7 @@ ul.icons li [class*=" icon-"] {
 .btn {
   text-decoration: none;
   display: inline-block;
-  padding: 5px 12px;
+  padding: 8px 12px;
   font-size: 14px;
   line-height: 25px;
   text-align: center;
@@ -1243,6 +1267,10 @@ ul.icons li [class*=" icon-"] {
 .btn-large [class^="icon-"],
 .btn-large [class*=" icon-"] {
   margin-top: 4px;
+}
+.btn-normal {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .btn-small {
   padding: 2px 10px;
@@ -1441,6 +1469,8 @@ input[type="button"].btn-block {
   background-color: #080808 \9;
 }
 .btn-toolbar {
+  padding-top: 5px;
+  padding-bottom: 5px;
   z-index:1000;
   position:absolute;
   color: #ffffff;
@@ -1545,10 +1575,6 @@ input[type="submit"].btn.btn-mini {
 
 /* Landscape smartphone or a bigger device */
 @media only screen and (min-width: 321px) {
-  .toolbar > h1 {
-    margin-left: -125px;
-    width: 250px;
-  }
   .dialog {
     width: 380px;
     margin-left: -190px;
@@ -1595,4 +1621,3 @@ input[type="submit"].btn.btn-mini {
   display: none;
 }
 */
-
