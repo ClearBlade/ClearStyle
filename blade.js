@@ -10,13 +10,13 @@ $(function() {
   var userAgent = window.navigator.userAgent.toLowerCase();
   if (userAgent.indexOf('android') > -1) {
     $("body").attr("data-platform", "android");
-    if (userAgent.indexOf("android 2") > -1) {
-      $("body").attr("data-version", "2");
-    }
   } else {
     $("body").attr("data-platform", "ios");
   }
-}); 
+  if (window.device && device.version) {
+    $("body").attr("data-version", (""+device.version).charAt(0));
+  }
+});
 
 
 // String.format: simple string formatter

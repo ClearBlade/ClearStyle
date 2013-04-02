@@ -598,19 +598,6 @@ input[type=checkbox]:disabled,
 /**********************************************************************/
 /* Dialog */
 
-@-webkit-keyframes dialogIn {
-  0% { -webkit-transform: scale(0.5,0.5);
-      opacity: 0; }
-  100% { -webkit-transform: scale(1,1);
-      opacity: 1; }
-}
-@-webkit-keyframes dialogOut {
-  0% { -webkit-transform: scale(1,1);
-      opacity: 1; }
-  100% { -webkit-transform: scale(0.5,0.5);
-      opacity: 0; }
-}
-
 .dialog {
   position: absolute;
   top: 50%;
@@ -629,15 +616,14 @@ input[type=checkbox]:disabled,
   text-align: center;
 
   opacity: 0;
-  -webkit-transform: scale(0.5, 0.5);
+  -webkit-transform: translate3d(0,-100%,0);
 }
 .dialog.in {
   opacity: 1;
-  -webkit-transform: scale(1, 1);
+  -webkit-transform: translate3d(0,0,0);
 }
-.dialog, 
-.dialog-backdrop { 
-  -webkit-transition: all 0.2s linear;
+.dialog {
+  -webkit-transition: all 0.4s;
 }
 
 .dialog-header {
@@ -1195,7 +1181,7 @@ ul.icons li [class*=" icon-"] {
   text-decoration: none;
   display: inline-block;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 25px;
   text-align: center;
   vertical-align: middle;
