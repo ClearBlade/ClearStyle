@@ -347,6 +347,7 @@ ul.full {
  */
 ul.full > .input {
   height: 42px;
+  border-radius:0px;
 }
 ul.full > .input input {
   position: absolute;
