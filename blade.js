@@ -28,8 +28,11 @@ String.prototype.format = function() {
     return prev.replace(new RegExp('\\$'+index, 'g'), current);
   }, this);
 };
-String.prototype.escapeHTML = function(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+String.prototype.escapeHTML = function() {
+  return this.replace(/&/g,'&amp;').replace(/"/g, '&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+};
+String.prototype.unescapeHTML = function() {
+  return this.replace(/&amp;/g,'&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g,'"');
 };
 
 /* Toast */
