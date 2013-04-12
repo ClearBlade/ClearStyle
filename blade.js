@@ -16,6 +16,42 @@ $(function() {
   if (window.device && device.version) {
     $("body").attr("data-version", (""+device.version).charAt(0));
   }
+  //uses document because document will be topmost level in bubbling
+  //uses body because jquery on events are called off of the element they are
+  //added to, so bubbling would not work if we used document instead.
+  $('body').on('touchstart','.scroll',function(e) {
+    //http://stackoverflow.com/questions/10787782/full-height-of-a-html-element-div-including-border-padding-and-margin
+    function Dimension(elm) {
+      var elmHeight, elmMargin;
+      elmHeight = document.defaultView.getComputedStyle(elm, '').height;
+      elmHeight = parseInt(elmHeight,10);
+      elmMargin = parseInt(document.defaultView.getComputedStyle(elm, '').getPropertyValue('margin-top'),10) + 
+        parseInt(document.defaultView.getComputedStyle(elm, '').getPropertyValue('margin-bottom'),10);
+      return (elmHeight+elmMargin);
+    }
+    if (e.currentTarget.offsetHeight === e.currentTarget.scrollHeight) {
+      var size = 0;
+      for (var i = 0; i < e.currentTarget.children.length; i++) {
+        size += Dimension(e.currentTarget.children[i]);
+      }
+      $(e.currentTarget).css('padding-bottom',
+                             (e.currentTarget.offsetHeight -size + 2) + 
+                               'px');
+    } 
+    if (e.currentTarget.scrollTop === 0) {
+      e.currentTarget.scrollTop = 1;
+    } else if (e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.offsetHeight) {
+      e.currentTarget.scrollTop -= 1;
+    }
+  });
+  $('body').on('touchmove','.scroll',function(e) {
+    if (e.currentTarget.offsetHeight !== e.currentTarget.scrollHeight) {
+      e.stopPropagation();
+    }
+  });
+  $('html').on('touchmove', function(e) {
+    e.preventDefault();
+  });
 });
 
 

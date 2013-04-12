@@ -454,7 +454,7 @@ ul li .arrow.active,
 ul li .arrow:active + .right,
 ul li .arrow.active + .right { 
   color: #EEE;
-  text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
+  -webkit-text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
 }
 
 /* Pair : Listitem with left and right */
