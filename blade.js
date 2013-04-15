@@ -74,7 +74,6 @@ var blade = function($,blade) {
       $this.removeClass('active');
     });
   });
-});
 
 
   // String.format: simple string formatter
@@ -255,7 +254,7 @@ var blade = function($,blade) {
     };
   }());
 };
-if (define) {
+if (typeof define !== "undefined" && define) {
   define(['$'], function($) {
     var b = {};
     blade($,b);
