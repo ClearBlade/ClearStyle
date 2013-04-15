@@ -67,6 +67,9 @@ var blade = function($,blade) {
   String.prototype.escapeHTML = function(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   };
+  String.prototype.unescapeHTML = function() {
+    return this.replace(/&amp;/g,'&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g,'"');
+  };
 
   /* Toast */
   blade.Toast = (function() {
@@ -209,7 +212,7 @@ var blade = function($,blade) {
       }
     }
     return {
-      show: function(text) {
+      show: function(text, $owner) {
         text = text || '';
         if (!$spinner) createSpinner();
         //If it's fading out, just finish fade out 
@@ -218,6 +221,7 @@ var blade = function($,blade) {
         }
         $spinner.appendTo(document.body);
         $spinnerText.text(text || '');
+        if (!$owner) $owner = $(document.body);
         $backdrop.appendTo(document.body);
       },
       hide: function() {
