@@ -436,7 +436,6 @@ ul li .arrow {
   padding-right: 28px;
 }
 
-ul li a:active, 
 ul li a.active {
   background: url('images/arrow_select.png') no-repeat;
   background-position: 99% center;
@@ -445,13 +444,9 @@ ul li a.active {
 }
 
 /*Make active links and their sibling elements change color*/
-ul li a:active,
 ul li a.active,
-ul li a:active + .right, 
 ul li a.active + .right,
-ul li .arrow:active,
 ul li .arrow.active,
-ul li .arrow:active + .right,
 ul li .arrow.active + .right { 
   color: #EEE;
   -webkit-text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;

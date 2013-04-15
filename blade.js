@@ -53,6 +53,28 @@ var blade = function($,blade) {
       e.preventDefault();
     });
   });
+  $('body').on('touchmove','.scroll',function(e) {
+    if (e.currentTarget.offsetHeight !== e.currentTarget.scrollHeight) {
+      e.stopPropagation();
+    }
+  });
+  $('html').on('touchmove', function(e) {
+    e.preventDefault();
+  });
+
+  //Make it so list elements are only active while touching them for a bit, without moving
+  //This is how native works: It stops list elements from highlighting while just scrolling a list
+  $('body').on('touchstart', 'li a, li .arrow', function(e) {
+    var $this = $(this);
+    var timeout = setTimeout(function() {
+      $this.addClass('active');
+    }, 80);
+    $this.one('touchend touchmove touchcancel', function() {
+      clearTimeout(timeout);
+      $this.removeClass('active');
+    });
+  });
+});
 
 
   // String.format: simple string formatter
