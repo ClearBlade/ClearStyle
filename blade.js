@@ -243,7 +243,7 @@ var blade = function($,blade) {
         $spinner.appendTo(document.body);
         $spinnerText.text(text || '');
         if (!$owner) $owner = $(document.body);
-        $backdrop.appendTo(document.body);
+        $backdrop.appendTo($owner);
       },
       hide: function() {
         if (!$spinner) createSpinner();
