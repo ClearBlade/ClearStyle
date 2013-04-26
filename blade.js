@@ -214,22 +214,25 @@ var blade = function($,blade) {
 
   /* Spinner */
   blade.Spinner = (function() {
-    var $spinner, $backdrop, $spinnerText;
-    var spinnerTemplate = '<div class="spinner"><i class="icon-spin icon-refresh"></i><p></p></div>';
+    var $spinner, $spinnerWrapper, $spinnerText;
+    var spinnerTemplate = 
+      '<div class="spinner-wrapper">' +
+      '<div class="spinner">' +
+      '<i class="icon-spin icon-refresh"></i><p></p></div>' +
+      '<div class="backdrop"></div>' +
+      '</div>';
     function onHidden() {
       $spinner.off('webkitTransitionEnd', onHidden);
-      $spinner.removeClass('out');
-      $backdrop.removeClass('out').css('background','');
+      $spinnerWrapper.children().removeClass('out');
       if ($('.spinner', $("body")).length) {
-        $spinner.remove();
-        $backdrop.remove();
+        $spinnerWrapper.remove();
       }
     }
     function createSpinner() {
       if (!$spinner) {
-        $spinner = $(spinnerTemplate);
+        $spinnerWrapper = $(spinnerTemplate);
+        $spinner = $spinnerWrapper.children('.spinner');
         $spinnerText = $spinner.find('p');
-        $backdrop = $("<div>").addClass("backdrop");
       }
     }
     return {
@@ -240,16 +243,14 @@ var blade = function($,blade) {
         if ($spinner.hasClass('out')) {
           onHidden();
         }
-        $spinner.appendTo(document.body);
-        $spinnerText.text(text || '');
         if (!$owner) $owner = $(document.body);
-        $backdrop.appendTo($owner);
+        $spinnerWrapper.appendTo($owner);
+        $spinnerText.text(text || '');
       },
       hide: function() {
         if (!$spinner) createSpinner();
-        $spinner.addClass('out');
+        $spinnerWrapper.children().addClass('out');
         $spinner.on('webkitTransitionEnd', onHidden);
-        $backdrop.addClass('out');
       }
     };
   }());
