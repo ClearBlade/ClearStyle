@@ -2,24 +2,33 @@
  * Copyright (c) 2013, ClearBlade Inc.
  */
 var blade = function($,blade) {
+
   $(function() {
-      //ios ':active' css fix
-      //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
+
+    //ios ':active' css fix
+    //see http://stackoverflow.com/questions/4940429/how-to-simulate-active-css-pseudo-class-in-android-on-non-link-elements
     document.body.ontouchstart = function() {};
 
+    //Check our userAgent, and put the current platform onto the body tag
     var userAgent = window.navigator.userAgent.toLowerCase();
     if (userAgent.indexOf('android') > -1) {
       $("body").attr("data-platform", "android");
     } else {
       $("body").attr("data-platform", "ios");
     }
-    if (window.device && device.version) {
+    //If we have cordova, after deviceready add the first number of the version
+    //to the body tag. We only really care if it's android and 2.x :-)
+    document.addEventListener("deviceready", function() {
       $("body").attr("data-version", (""+device.version).charAt(0));
-    }
-    //uses document because document will be topmost level in bubbling
-    //uses body because jquery on events are called off of the element they are
-    //added to, so bubbling would not work if we used document instead.
-    $('body').on('touchstart','.scroll',function(e) {
+    }, false);
+
+    //## container bouncy fix
+    //Make it so even when a list doesn't take up its full container, we can
+    //bounce it around so it looks native.  We do this by adding padding-bottom
+    //to the list so it actually takes up "more room" than the visible elements
+    //and we can scroll it a bit.
+    //@param e, touchstart event
+    function bouncyFix(e) {
       //http://stackoverflow.com/questions/10787782/full-height-of-a-html-element-div-including-border-padding-and-margin
       function Dimension(elm) {
         var elmHeight, elmMargin;
@@ -29,6 +38,8 @@ var blade = function($,blade) {
           parseInt(document.defaultView.getComputedStyle(elm, '').getPropertyValue('margin-bottom'),10);
         return (elmHeight+elmMargin);
       }
+      //If our list container's visible height is the same as its scroll height,
+      //we need to add our bouncy effect.
       if (e.currentTarget.offsetHeight === e.currentTarget.scrollHeight) {
         var size = 0;
         for (var i = 0; i < e.currentTarget.children.length; i++) {
@@ -38,12 +49,21 @@ var blade = function($,blade) {
                                (e.currentTarget.offsetHeight -size + 2) + 
                                  'px');
       } 
+    }
+    $('body').on('touchstart','.scroll',function(e) {
+      //If we scroll where there is no more room for the webview to scroll,
+      //by default the webview itself will scroll up and down, this looks really
+      //bad.  So if we are scrolling to the very top or bottom, add/subtract one
       if (e.currentTarget.scrollTop === 0) {
         e.currentTarget.scrollTop = 1;
       } else if (e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.offsetHeight) {
         e.currentTarget.scrollTop -= 1;
       }
+
+      //Call bouncyFix when we touchstart a scrollable area
+      bouncyFix(e);
     });
+
     $('body').on('touchmove','.scroll',function(e) {
       if (e.currentTarget.offsetHeight !== e.currentTarget.scrollHeight) {
         e.stopPropagation();
@@ -52,27 +72,37 @@ var blade = function($,blade) {
     $('html').on('touchmove', function(e) {
       e.preventDefault();
     });
-  });
-  $('body').on('touchmove','.scroll',function(e) {
-    if (e.currentTarget.offsetHeight !== e.currentTarget.scrollHeight) {
-      e.stopPropagation();
-    }
-  });
-  $('html').on('touchmove', function(e) {
-    e.preventDefault();
-  });
 
-  //Make it so list elements are only active while touching them for a bit, without moving
-  //This is how native works: It stops list elements from highlighting while just scrolling a list
-  $('body').on('touchstart', 'li a, li .arrow', function(e) {
-    var $this = $(this);
-    var timeout = setTimeout(function() {
-      $this.addClass('active');
-    }, 80);
-    $this.one('touchend touchmove touchcancel', function() {
-      clearTimeout(timeout);
-      $this.removeClass('active');
+    //Make it so list elements are only active while touching them for a bit, without moving
+    //This is how native works: It stops list elements from highlighting while just scrolling a list
+    $(document).on('touchstart', 'li a, li .arrow', function(e) {
+      var $this = $(this);
+      //Be sure to clean up listeners when we're done so they don't start 
+      //stacking up
+      function deactivate() {
+        $this.removeClass('active');
+        $this.unbind('touchend', onTapDone);
+        $this.unbind('touchmove touchcancel', deactivate);
+        clearTimeout(activateTimeout);
+      }
+      function activate() {
+        $this.addClass('active');
+        clearTimeout(activateTimeout);
+      }
+      //If the user finishes a tap, instantly add the class and let it stay
+      //on for 1 second
+      function onTapDone() {
+        activate();
+        setTimeout(deactivate, 1500);
+      }
+
+      //Only add active after 80 seconds, incase user's finger moves
+      var activateTimeout = setTimeout(activate, 80);
+
+      $this.one('touchmove touchcancel', deactivate);
+      $this.one('touchend', onTapDone);
     });
+
   });
 
 
@@ -85,8 +115,8 @@ var blade = function($,blade) {
       return prev.replace(new RegExp('\\$'+index, 'g'), current);
     }, this);
   };
-  String.prototype.escapeHTML = function(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  String.prototype.escapeHTML = function() {
+    return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   };
   String.prototype.unescapeHTML = function() {
     return this.replace(/&amp;/g,'&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g,'"');
